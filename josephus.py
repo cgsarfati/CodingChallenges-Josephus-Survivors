@@ -24,9 +24,34 @@ As a sanity case, if never skip anyone, the last person will be our survivor:
         # Circular traversal ends when LL only has 1 node left?
 
 
-def find_survivor(num_people, kill_every):
-    """Given num_people in circle, kill [kill_every]th person, return survivor."""
+class Node(object):
+    """Doubly-linked node."""
 
+    def __init__(self, data, prev=None, next=None):
+        self.data = data
+        self.prev = prev
+        self.next = next
+
+    @classmethod
+    def make_list(cls, n):
+        """Construct circular doubly-linked list of n items. Returns head node."""
+
+        # Make 1st node (+ remember that it's the first for end output)
+            # Side-note: can do multiple-assignments in python!
+        first = node = prev = cls(1)
+
+        # Make every other node
+        for i in range(2, n + 1):
+            node = Node(i, prev=prev)
+            prev.next = node
+            prev = node
+
+        # Fix last and first node's prev/next
+        node.next = first
+        first.prev = node
+
+        # Return head node
+        return first
 
 
 if __name__ == '__main__':
